@@ -11,3 +11,14 @@ python3 ./python/index_corpus_qdrant.py \
   --ollama-url http://localhost:11434 \
   --ollama-model mxbai-embed-large \
   --qdrant-url http://localhost:6333
+
+
+cd /Users/gbrouwer/Work/Lectio
+source .venv/bin/activate
+
+# point backend at the local llm-stack
+export OLLAMA_URL="http://localhost:11434"
+export QDRANT_URL="http://localhost:6333"
+export QDRANT_COLLECTION="lectio_corpus"
+
+python ./python/lectio_backend.py
