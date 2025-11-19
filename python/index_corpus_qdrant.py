@@ -25,6 +25,7 @@ from typing import Iterable, List, Tuple
 import requests
 from qdrant_client import QdrantClient
 from qdrant_client.http.models import Distance, VectorParams, PointStruct
+from tqdm import tqdm
 
 
 def iter_paragraphs(text_root: Path) -> Iterable[Tuple[Path, int, str]]:
@@ -137,6 +138,14 @@ def main() -> None:
     if not args.text_dir.exists():
         raise SystemExit(f"Text directory not found: {args.text_dir}")
 
+    # Count paragraphs for progress reporting.
+    total_paragraphs = sum(1 for _ in iter_paragraphs(args.text_dir))
+    if total_paragraphs == 0:
+        print("[!] No paragraphs found in text directory.")
+        return
+
+    print(f"[*] Found {total_paragraphs} paragraphs to index.")
+
     # Qdrant client: can point to local or remote host.
     client = QdrantClient(
         url=args.qdrant_url,
@@ -179,7 +188,11 @@ def main() -> None:
     point_id_counter = itertools.count()
     buffer: List[PointStruct] = []
 
-    for path, idx, para, maybe_emb in all_paragraphs():
+    for path, idx, para, maybe_emb in tqdm(
+        all_paragraphs(),
+        total=total_paragraphs,
+        desc="Indexing paragraphs",
+    ):
         if maybe_emb is None:
             emb = get_embedding(session, args.ollama_url, args.ollama_model, para)
         else:
@@ -207,4 +220,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
