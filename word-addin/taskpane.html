@@ -2,55 +2,136 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Lectio Demo</title>
+    <title>NLR Lectio</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
     <style>
+      html,
       body {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        height: 100%;
+      }
+      body {
+        font-family: "Georgia", "Times New Roman", serif;
         margin: 0;
         padding: 12px;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--bg);
+        color: var(--fg);
+      }
+      body.theme-dark {
+        --bg: #020617;
+        --fg: #e5e7eb;
+        --border: #1f2937;
+        --muted: #9ca3af;
+        --button-bg: #111827;
+        --button-fg: #e5e7eb;
+      }
+      body.theme-light {
+        --bg: #e0f2fe;
+        --fg: #111827;
+        --border: #bfdbfe;
+        --muted: #6b7280;
+        --button-bg: #e5e7eb;
+        --button-fg: #111827;
+      }
+      #header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+      #branding {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+      #branding img {
+        height: 32px;
+        cursor: pointer;
       }
       h1 {
         font-size: 16px;
         margin: 0 0 8px;
+      }
+      #theme-toggle {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 11px;
+      }
+      #theme-select {
+        font-size: 11px;
+        padding: 2px 4px;
       }
       button {
         padding: 6px 10px;
         font-size: 13px;
         cursor: pointer;
         margin-bottom: 8px;
+        background-color: var(--button-bg);
+        color: var(--button-fg);
+        border: 1px solid var(--border);
+        border-radius: 4px;
       }
       #status {
         font-size: 12px;
-        color: #555;
+        color: var(--muted);
         margin-bottom: 8px;
       }
       #results {
         font-size: 12px;
-        border-top: 1px solid #ddd;
+        border-top: 1px solid var(--border);
         padding-top: 8px;
       }
       .result-item {
         margin-bottom: 10px;
         padding-bottom: 8px;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid var(--border);
       }
       .result-meta {
-        color: #777;
+        color: var(--muted);
         font-size: 11px;
       }
       .result-text {
         margin-top: 4px;
         white-space: pre-wrap;
       }
+      #footer {
+        margin-top: auto;
+        padding-top: 8px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: flex-end;
+      }
     </style>
   </head>
-  <body>
-    <h1>Lectio</h1>
+  <body class="theme-light">
+    <div id="header">
+      <div id="branding">
+        <a href="https://lectio.local" target="_blank" id="logo-link">
+          <img src="lectio-logo.svg" alt="Lectio logo" />
+        </a>
+        <h1>Lectio</h1>
+      </div>
+    </div>
     <button id="analyze-button">Find related paragraphs</button>
     <div id="status"></div>
     <div id="results"></div>
+
+    <div id="footer">
+      <div id="theme-toggle">
+        <label for="theme-select">Theme:</label>
+        <select id="theme-select">
+          <option value="system">System</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+    </div>
 
     <script src="taskpane.js"></script>
   </body>

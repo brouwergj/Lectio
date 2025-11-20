@@ -22,3 +22,4 @@ export QDRANT_URL="http://localhost:6333"
 export QDRANT_COLLECTION="lectio_corpus"
 
 python ./python/lectio_backend.py
+
